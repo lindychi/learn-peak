@@ -14,9 +14,11 @@ export default function RandomQuestions({}: Props) {
   const [isSubmit, setIsSubmit] = useState(false);
   const [userId, setUserId] = useState<string | undefined>();
   const [loading, setLoading] = useState(true);
+  const [input, setInput] = useState<string>("");
 
   const refreshQuestion = async () => {
     setIsSubmit(false);
+    setInput("");
     setLoading(true);
     if (userId) {
       getRandomQuestion(userId)
@@ -82,7 +84,11 @@ export default function RandomQuestions({}: Props) {
         )}
       </div>
       답변 입력:
-      <textarea className="border-2 border-gray-300 rounded-md w-full p-2"></textarea>
+      <textarea
+        className="border-2 border-gray-300 rounded-md w-full p-2"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      ></textarea>
       <button onClick={() => setIsSubmit(true)}>제출</button>
       {isSubmit && (
         <div>

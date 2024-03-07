@@ -13,6 +13,21 @@ export default function RandomQuestions({}: Props) {
   const [userId, setUserId] = useState<string | undefined>();
   const [loading, setLoading] = useState(true);
 
+  const refreshQuestion = async () => {
+    setIsSubmit(false);
+    setLoading(true);
+    if (userId) {
+      getRandomQuestion(userId)
+        .then(({ targetQuestion, targetForget }) => {
+          setQuestion(targetQuestion);
+          setForget(targetForget);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  };
+
   useEffect(() => {
     getUser().then((user) => {
       setUserId(user.id);
@@ -52,27 +67,30 @@ export default function RandomQuestions({}: Props) {
           <div className="flex justify-around">
             <button
               className="p-2 bg-red-400"
-              onClick={() => {
+              onClick={async () => {
                 if (!userId) {
                   alert("로그인이 필요합니다.");
                 } else if (!question) {
                   alert("문제를 불러오는 중입니다.");
                 } else {
-                  updateOrInsertForget(userId, question?.id, -1, forget);
+                  await updateOrInsertForget(userId, question?.id, -1, forget);
+                  refreshQuestion();
                 }
+                // 새 문제 불러오기
               }}
             >
               오답
             </button>
             <button
               className="p-2 bg-blue-400"
-              onClick={() => {
+              onClick={async () => {
                 if (!userId) {
                   alert("로그인이 필요합니다.");
                 } else if (!question) {
                   alert("문제를 불러오는 중입니다.");
                 } else {
-                  updateOrInsertForget(userId, question?.id, 1, forget);
+                  await updateOrInsertForget(userId, question?.id, 1, forget);
+                  refreshQuestion();
                 }
               }}
             >

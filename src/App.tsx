@@ -127,8 +127,7 @@ function App() {
               </div>
               <div>
                 <label htmlFor="answer">답:</label>
-                <input
-                  type="text"
+                <textarea
                   id="answer"
                   name="answer"
                   value={formState.answer}

@@ -3,10 +3,12 @@ import { getRandomQuestion } from "../../services/questions";
 import { getUser } from "../../services/user";
 import { Tables } from "../../types/database.types";
 import { updateOrInsertForget } from "../../services/forgets";
+import { useNavigate } from "react-router-dom";
 
 type Props = {};
 
 export default function RandomQuestions({}: Props) {
+  const navigate = useNavigate();
   const [question, setQuestion] = useState<Tables<"questions">>();
   const [forget, setForget] = useState<Tables<"forgets">>();
   const [isSubmit, setIsSubmit] = useState(false);
@@ -46,20 +48,41 @@ export default function RandomQuestions({}: Props) {
     if (loading) {
       return <div>로딩 중...</div>;
     } else {
-      return <div>문제가 없습니다.</div>;
+      return (
+        <div>
+          문제가 없습니다.
+          <button
+            className="p-2 bg-emerald-300 rounded"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            뒤로가기
+          </button>
+        </div>
+      );
     }
   }
 
   return (
     <div>
-      RandomQuestions<div>{question?.title}</div>
+      <button
+        className="p-2 bg-emerald-300 rounded"
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        뒤로가기
+      </button>
+      <div className="font-bold">{question?.title}</div>
       <div>
         <div className=" whitespace-pre-line">{question?.contentText}</div>
         {question?.contentImage && (
           <img src={question?.contentImage} alt={"question-content"} />
         )}
       </div>
-      답변 입력:<textarea className="border"></textarea>
+      답변 입력:
+      <textarea className="border-2 border-gray-300 rounded-md w-full p-2"></textarea>
       <button onClick={() => setIsSubmit(true)}>제출</button>
       {isSubmit && (
         <div>

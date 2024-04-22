@@ -144,7 +144,7 @@ function App() {
                   <img
                     src={previewImage}
                     alt="Preview"
-                    style={{ maxWidth: "200px", maxHeight: "200px" }}
+                    style={{ maxWidth: "500px", maxHeight: "500px" }}
                   />
                 )}
               </div>

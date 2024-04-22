@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { supabase } from "./libs/supabase";
 import { useNavigate } from "react-router-dom";
 import { QuestionFormState } from "./types/questions";
@@ -14,6 +14,10 @@ function App() {
     contentImage: undefined,
     answer: "",
   });
+  const [previewImage, setPreviewImage] = useState<string | undefined>();
+
+  // 파일 입력 필드에 대한 참조 생성
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const logout = async () => {
     try {
@@ -45,7 +49,12 @@ function App() {
   };
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(e.target.files[0]);
       setFormState({
         ...formState,
         contentImage: e.target.files[0],
@@ -67,6 +76,12 @@ function App() {
         contentImage: undefined,
         answer: "",
       });
+      setPreviewImage(undefined);
+
+      // 파일 입력 필드 직접 초기화
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } catch (e) {
       console.error(e);
     }
@@ -123,7 +138,15 @@ function App() {
                   id="contentImage"
                   name="contentImage"
                   onChange={handleImageChange}
+                  ref={fileInputRef} // 참조 설정
                 />
+                {previewImage && (
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    style={{ maxWidth: "200px", maxHeight: "200px" }}
+                  />
+                )}
               </div>
               <div>
                 <label htmlFor="answer">답:</label>

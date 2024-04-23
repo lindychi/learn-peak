@@ -10,7 +10,7 @@ export const updateOrInsertForget = async (
   if (forget) {
     let calcWeight = forget?.weight ?? 0 + weight;
     if (calcWeight < 0) {
-      calcWeight = 0;
+      calcWeight = -1;
     }
 
     const dueDate = new Date(
@@ -33,7 +33,7 @@ export const updateOrInsertForget = async (
   } else {
     let calcWeight = weight;
     if (calcWeight < 0) {
-      calcWeight = 0;
+      calcWeight = -1;
     }
 
     const dueDate = new Date(

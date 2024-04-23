@@ -59,7 +59,7 @@ export const getRandomQuestion = async (
     .from("forgets")
     .select()
     .eq("user_id", userId)
-    .gt("dueDate", new Date().toISOString().slice(0, 10));
+    .lte("dueDate", new Date().toISOString().slice(0, 10));
   const skipIds = forgets?.map((forget) => forget.question_id) ?? [];
   console.log(skipIds);
 

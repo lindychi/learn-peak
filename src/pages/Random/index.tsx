@@ -22,7 +22,7 @@ export default function RandomQuestions({}: Props) {
     setInput("");
     setLoading(true);
     if (userId) {
-      getRandomQuestion(userId)
+      getRandomQuestion(userId, question?.id)
         .then(({ targetQuestion, targetForget, remainCount }) => {
           setQuestion(targetQuestion);
           setForget(targetForget);

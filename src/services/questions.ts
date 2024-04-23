@@ -51,7 +51,10 @@ export const addQuestions = async (formState: QuestionFormState) => {
   return questions;
 };
 
-export const getRandomQuestion = async (userId: string) => {
+export const getRandomQuestion = async (
+  userId: string,
+  prevQuestionId?: number
+) => {
   const { data: forgets } = await supabase
     .from("forgets")
     .select()
@@ -68,7 +71,7 @@ export const getRandomQuestion = async (userId: string) => {
   }
 
   const filteredQuestions = questions.filter((questions) => {
-    if (skipIds.includes(questions.id)) {
+    if (skipIds.includes(questions.id) || questions.id === prevQuestionId) {
       return false;
     } else {
       return true;

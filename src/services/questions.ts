@@ -66,6 +66,7 @@ export const getRandomQuestion = async (userId: string) => {
   if (error) {
     throw error;
   }
+
   const filteredQuestions = questions.filter((questions) => {
     if (skipIds.includes(questions.id)) {
       return false;
@@ -83,5 +84,9 @@ export const getRandomQuestion = async (userId: string) => {
     );
   }
 
-  return { targetQuestion, targetForget };
+  return {
+    targetQuestion,
+    targetForget,
+    remainCount: filteredQuestions.length,
+  };
 };

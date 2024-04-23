@@ -15,6 +15,7 @@ export default function RandomQuestions({}: Props) {
   const [userId, setUserId] = useState<string | undefined>();
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState<string>("");
+  const [remainCount, setRemainCount] = useState<number | undefined>();
 
   const refreshQuestion = async () => {
     setIsSubmit(false);
@@ -32,18 +33,25 @@ export default function RandomQuestions({}: Props) {
     }
   };
 
-  useEffect(() => {
-    getUser().then((user) => {
+  const loadInfo = async () => {
+    try {
+      const user = await getUser();
       setUserId(user.id);
-      getRandomQuestion(user.id)
-        .then(({ targetQuestion, targetForget }) => {
-          setQuestion(targetQuestion);
-          setForget(targetForget);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    });
+
+      const { targetQuestion, targetForget, remainCount } =
+        await getRandomQuestion(user.id);
+      setQuestion(targetQuestion);
+      setForget(targetForget);
+      setRemainCount(remainCount);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadInfo();
   }, []);
 
   if (!question) {
@@ -76,6 +84,7 @@ export default function RandomQuestions({}: Props) {
       >
         뒤로가기
       </button>
+      남은 문제 수: {remainCount}
       <div className="font-bold">{question?.title}</div>
       <div>
         <div className=" whitespace-pre-line">{question?.contentText}</div>

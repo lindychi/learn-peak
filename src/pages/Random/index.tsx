@@ -101,7 +101,7 @@ export default function RandomQuestions({}: Props) {
       <button onClick={() => setIsSubmit(true)}>제출</button>
       {isSubmit && (
         <div>
-          <div>정답: {question?.answer}</div>
+          <div className="whitespace-pre-line">정답: {question?.answer}</div>
           <div className="flex justify-around">
             <button
               className="p-2 bg-red-400"

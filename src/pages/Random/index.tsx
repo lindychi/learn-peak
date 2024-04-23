@@ -23,9 +23,10 @@ export default function RandomQuestions({}: Props) {
     setLoading(true);
     if (userId) {
       getRandomQuestion(userId)
-        .then(({ targetQuestion, targetForget }) => {
+        .then(({ targetQuestion, targetForget, remainCount }) => {
           setQuestion(targetQuestion);
           setForget(targetForget);
+          setRemainCount(remainCount);
         })
         .finally(() => {
           setLoading(false);

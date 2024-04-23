@@ -13,14 +13,17 @@ export const updateOrInsertForget = async (
       calcWeight = 0;
     }
 
+    const dueDate = new Date(
+      new Date().getTime() + 1000 * 60 * 60 * 24 * calcWeight
+    )
+      .toISOString()
+      .slice(0, 10);
+    console.log("failed dueDate" + dueDate);
+
     const { error } = await supabase
       .from("forgets")
       .update({
-        dueDate: new Date(
-          new Date().getTime() + 1000 * 60 * 60 * 24 * calcWeight
-        )
-          .toISOString()
-          .slice(0, 10),
+        dueDate: dueDate,
         weight: calcWeight,
       })
       .eq("id", forget.id);
@@ -33,6 +36,13 @@ export const updateOrInsertForget = async (
       calcWeight = 0;
     }
 
+    const dueDate = new Date(
+      new Date().getTime() + 1000 * 60 * 60 * 24 * calcWeight
+    )
+      .toISOString()
+      .slice(0, 10);
+    console.log("failed dueDate" + dueDate);
+
     const { error } = await supabase
       .from("forgets")
       .insert([
@@ -40,11 +50,7 @@ export const updateOrInsertForget = async (
           user_id: userId,
           question_id: questionId,
           weight: calcWeight,
-          dueDate: new Date(
-            new Date().getTime() + 1000 * 60 * 60 * 24 * calcWeight
-          )
-            .toISOString()
-            .slice(0, 10),
+          dueDate: dueDate,
         },
       ])
       .select();

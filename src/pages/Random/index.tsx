@@ -98,11 +98,12 @@ export default function RandomQuestions({}: Props) {
       </div>
       {/* dueDate가 오늘로부터 몇일전인지 출력 */}
       <div>
-        {forget?.dueDate
-          && `마지막 정답일: ${Math.floor(
-              (new Date(forget?.dueDate).getTime() - Date.now()) /
-                (1000 * 60 * 60 * 24)
-            )}일 전`}
+        {forget?.dueDate &&
+          `마지막 정답일: ${Math.floor(
+            (new Date(forget?.dueDate).getTime() - Date.now()) /
+              (1000 * 60 * 60 * 24)
+          )}일 전`}
+      </div>
       <div className="font-bold">{question?.title}</div>
       <div>
         <div className=" whitespace-pre-line">{question?.contentText}</div>

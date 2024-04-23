@@ -60,6 +60,7 @@ export const getRandomQuestion = async (
     .select()
     .eq("user_id", userId)
     .gt("dueDate", new Date().toISOString().slice(0, 10));
+  // 스킵 대상을 솎아내는 것이므로 gt가 맞음
   const skipIds = forgets?.map((forget) => forget.question_id) ?? [];
   console.log(skipIds);
 
@@ -91,12 +92,14 @@ export const getRandomQuestion = async (
     "randomQuestion",
     targetQuestion,
     targetForget,
-    filteredQuestions.length
+    filteredQuestions.length,
+    questions.length
   );
 
   return {
     targetQuestion,
     targetForget,
     remainCount: filteredQuestions.length,
+    totalCount: questions.length,
   };
 };

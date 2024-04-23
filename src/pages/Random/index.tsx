@@ -17,6 +17,7 @@ export default function RandomQuestions({}: Props) {
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState<string>("");
   const [remainCount, setRemainCount] = useState<number | undefined>();
+  const [totalCount, setTotalCount] = useState<number | undefined>();
 
   const refreshQuestion = async () => {
     setIsSubmit(false);
@@ -24,10 +25,11 @@ export default function RandomQuestions({}: Props) {
     setLoading(true);
     if (userId) {
       getRandomQuestion(userId, question?.id)
-        .then(({ targetQuestion, targetForget, remainCount }) => {
+        .then(({ targetQuestion, targetForget, remainCount, totalCount }) => {
           setQuestion(targetQuestion);
           setForget(targetForget);
           setRemainCount(remainCount);
+          setTotalCount(totalCount);
         })
         .finally(() => {
           setLoading(false);
@@ -40,11 +42,12 @@ export default function RandomQuestions({}: Props) {
       const user = await getUser();
       setUserId(user.id);
 
-      const { targetQuestion, targetForget, remainCount } =
+      const { targetQuestion, targetForget, remainCount, totalCount } =
         await getRandomQuestion(user.id);
       setQuestion(targetQuestion);
       setForget(targetForget);
       setRemainCount(remainCount);
+      setTotalCount(totalCount);
     } catch (e) {
       console.error(e);
     } finally {
@@ -86,7 +89,9 @@ export default function RandomQuestions({}: Props) {
       >
         뒤로가기
       </button>
-      <div>남은 문제 수: {remainCount}</div>
+      <div>
+        남은 문제 수: {remainCount}/{totalCount}
+      </div>
       {/* weight에 따라서 weight이 낮으면 점점 더 붉은색, weight이 높으면 점점 더 녹색으로 출력되도록 수정 */}
       <div
         className={clsx({

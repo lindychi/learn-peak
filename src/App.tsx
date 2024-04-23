@@ -140,13 +140,7 @@ function App() {
                   onChange={handleImageChange}
                   ref={fileInputRef} // 참조 설정
                 />
-                {previewImage && (
-                  <img
-                    src={previewImage}
-                    alt="Preview"
-                    style={{ maxWidth: "500px", maxHeight: "500px" }}
-                  />
-                )}
+                {previewImage && <img src={previewImage} alt="Preview" />}
               </div>
               <div>
                 <label htmlFor="answer">답:</label>

@@ -87,6 +87,13 @@ export const getRandomQuestion = async (
     );
   }
 
+  console.log(
+    "randomQuestion",
+    targetQuestion,
+    targetForget,
+    filteredQuestions.length
+  );
+
   return {
     targetQuestion,
     targetForget,

@@ -4,6 +4,7 @@ import { getUser } from "../../services/user";
 import { Tables } from "../../types/database.types";
 import { updateOrInsertForget } from "../../services/forgets";
 import { useNavigate } from "react-router-dom";
+import clsx from "clsx";
 
 type Props = {};
 
@@ -85,7 +86,23 @@ export default function RandomQuestions({}: Props) {
       >
         뒤로가기
       </button>
-      남은 문제 수: {remainCount}
+      <div>남은 문제 수: {remainCount}</div>
+      {/* weight에 따라서 weight이 낮으면 점점 더 붉은색, weight이 높으면 점점 더 녹색으로 출력되도록 수정 */}
+      <div
+        className={clsx({
+          "text-red-500": (forget?.weight ?? 0) < 0,
+          "text-green-500": (forget?.weight ?? 0) > 0,
+        })}
+      >
+        {forget?.weight ?? 0}
+      </div>
+      {/* dueDate가 오늘로부터 몇일전인지 출력 */}
+      <div>
+        {forget?.dueDate
+          && `마지막 정답일: ${Math.floor(
+              (new Date(forget?.dueDate).getTime() - Date.now()) /
+                (1000 * 60 * 60 * 24)
+            )}일 전`}
       <div className="font-bold">{question?.title}</div>
       <div>
         <div className=" whitespace-pre-line">{question?.contentText}</div>

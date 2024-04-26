@@ -139,18 +139,18 @@ export default function RandomQuestions() {
           </>
         ) : (
           <>
-            <button
-              onClick={() => setIsSubmit(true)}
-              className="h-20 flex-1 flex items-center justify-center bg-gray-300 rounded-xl text-xl"
-            >
-              제출
-            </button>
             <div
               className="h-20 flex-1 flex items-center justify-center bg-green-300 rounded-xl text-xl"
               onClick={() => handleScore(1)}
             >
               통과
             </div>
+            <button
+              onClick={() => setIsSubmit(true)}
+              className="h-20 flex-1 flex items-center justify-center bg-gray-300 rounded-xl text-xl"
+            >
+              제출
+            </button>
           </>
         )}
       </div>

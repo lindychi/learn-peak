@@ -65,7 +65,7 @@ export const getRandomQuestion = async (
     );
   // 스킵 대상을 솎아내는 것이므로 gt가 맞음
   const skipIds = forgets?.map((forget) => forget.question_id) ?? [];
-  console.log(skipIds);
+  // console.log(skipIds);
 
   const { data: questions, error } = await supabase
     .from("questions")
@@ -90,13 +90,13 @@ export const getRandomQuestion = async (
     .eq("user_id", userId)
     .eq("question_id", targetQuestion.id);
 
-  console.log(
-    "randomQuestion",
-    targetQuestion,
-    targetForget?.[0],
-    filteredQuestions.length,
-    questions.length
-  );
+  // console.log(
+  //   "randomQuestion",
+  //   targetQuestion,
+  //   targetForget?.[0],
+  //   filteredQuestions.length,
+  //   questions.length
+  // );
 
   return {
     targetQuestion,

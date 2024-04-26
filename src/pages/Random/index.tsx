@@ -53,6 +53,18 @@ export default function RandomQuestions() {
     }
   };
 
+  const handleScore = async (score: number) => {
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+    } else if (!question) {
+      alert("문제를 불러오는 중입니다.");
+    } else {
+      await updateOrInsertForget(userId, question?.id, score, forget);
+      refreshQuestion();
+    }
+    // 새 문제 불러오기
+  };
+
   useEffect(() => {
     loadInfo();
   }, []);
@@ -109,6 +121,39 @@ export default function RandomQuestions() {
             )
           )}일 전`}
       </div>
+      <div className="h-20 flex">
+        {isSubmit ? (
+          <>
+            <div
+              className="h-20 flex-1 flex items-center justify-center bg-red-300 rounded-xl text-xl"
+              onClick={() => handleScore(-1)}
+            >
+              오답
+            </div>
+            <div
+              className="h-20 flex-1 flex items-center justify-center bg-blue-300 rounded-xl text-xl"
+              onClick={() => handleScore(1)}
+            >
+              정답
+            </div>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => setIsSubmit(true)}
+              className="h-20 flex-1 flex items-center justify-center bg-gray-300 rounded-xl text-xl"
+            >
+              제출
+            </button>
+            <div
+              className="h-20 flex-1 flex items-center justify-center bg-green-300 rounded-xl text-xl"
+              onClick={() => handleScore(1)}
+            >
+              통과
+            </div>
+          </>
+        )}
+      </div>
       <div className="font-bold">{question?.title}</div>
       <div>
         <div className=" whitespace-pre-line">{question?.contentText}</div>
@@ -121,45 +166,30 @@ export default function RandomQuestions() {
         className="border-2 border-gray-300 rounded-md w-full p-2"
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            setIsSubmit(true);
+          }
+        }}
       ></textarea>
-      <button onClick={() => setIsSubmit(true)}>제출</button>
+      {/* <button
+        onClick={() => setIsSubmit(true)}
+        className=" bg-blue-400 rounded-lg h-20 w-40"
+      >
+        제출
+      </button> */}
       {isSubmit && (
-        <div>
-          <div className="whitespace-pre-line">정답: {question?.answer}</div>
-          <div className="flex justify-around">
-            <button
-              className="p-2 bg-red-400"
-              onClick={async () => {
-                if (!userId) {
-                  alert("로그인이 필요합니다.");
-                } else if (!question) {
-                  alert("문제를 불러오는 중입니다.");
-                } else {
-                  await updateOrInsertForget(userId, question?.id, -1, forget);
-                  refreshQuestion();
-                }
-                // 새 문제 불러오기
-              }}
-            >
-              오답
-            </button>
-            <button
-              className="p-2 bg-blue-400"
-              onClick={async () => {
-                if (!userId) {
-                  alert("로그인이 필요합니다.");
-                } else if (!question) {
-                  alert("문제를 불러오는 중입니다.");
-                } else {
-                  await updateOrInsertForget(userId, question?.id, 1, forget);
-                  refreshQuestion();
-                }
-              }}
-            >
-              정답
-            </button>
-          </div>
-        </div>
+        <div className="whitespace-pre-line">정답: {question?.answer}</div>
+        // <div>
+        //   <div className="flex justify-around">
+        //     <button className="p-2 bg-red-400" onClick={() => handleScore(-1)}>
+        //       오답
+        //     </button>
+        //     <button className="p-2 bg-blue-400" onClick={() => handleScore(1)}>
+        //       정답
+        //     </button>
+        //   </div>
+        // </div>
       )}
     </div>
   );

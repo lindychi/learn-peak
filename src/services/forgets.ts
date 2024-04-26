@@ -7,17 +7,29 @@ export const updateOrInsertForget = async (
   weight: number,
   forget?: Tables<"forgets">
 ) => {
+  console.log(questionId, weight, forget);
   if (forget) {
-    let calcWeight = forget?.weight ?? 0 + weight;
-    if (calcWeight < 0) {
-      calcWeight = -1;
+    let calcWeight;
+    if (weight > 0) {
+      if ((forget?.weight ?? 0) > 0) {
+        calcWeight = (forget?.weight ?? 0) * 2;
+      } else {
+        calcWeight = weight;
+      }
+    } else {
+      if ((forget?.weight ?? 0) > 1) {
+        calcWeight = (forget?.weight ?? 0) / 2;
+      } else {
+        calcWeight = weight;
+      }
     }
+    console.log(calcWeight, "<=", forget?.weight, "+", weight);
 
-    const dueDate = new Date(
-      new Date().getTime() + 1000 * 60 * 60 * 24 * calcWeight
-    )
-      .toISOString()
-      .slice(0, 10);
+    const dueDate =
+      new Date(new Date().getTime() + 1000 * 60 * calcWeight)
+        .toISOString()
+        .slice(0, 16)
+        .replace("T", " ") + ":00";
     console.log("failed dueDate" + dueDate);
 
     const { error } = await supabase
@@ -35,12 +47,13 @@ export const updateOrInsertForget = async (
     if (calcWeight < 0) {
       calcWeight = -1;
     }
+    console.log(calcWeight, "<=", weight);
 
-    const dueDate = new Date(
-      new Date().getTime() + 1000 * 60 * 60 * 24 * calcWeight
-    )
-      .toISOString()
-      .slice(0, 10);
+    const dueDate =
+      new Date(new Date().getTime() + 1000 * 60 * calcWeight)
+        .toISOString()
+        .slice(0, 16)
+        .replace("T", " ") + ":00";
     console.log("failed dueDate" + dueDate);
 
     const { error } = await supabase

@@ -6,9 +6,7 @@ import { updateOrInsertForget } from "../../services/forgets";
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 
-type Props = {};
-
-export default function RandomQuestions({}: Props) {
+export default function RandomQuestions() {
   const navigate = useNavigate();
   const [question, setQuestion] = useState<Tables<"questions">>();
   const [forget, setForget] = useState<Tables<"forgets">>();
@@ -104,9 +102,11 @@ export default function RandomQuestions({}: Props) {
       {/* dueDate가 오늘로부터 몇일전인지 출력 */}
       <div>
         {forget?.dueDate &&
-          `마지막 정답일: ${Math.floor(
-            (new Date(forget?.dueDate).getTime() - Date.now()) /
-              (1000 * 60 * 60 * 24)
+          `마지막 정답일: ${Math.abs(
+            Math.floor(
+              (new Date(forget?.dueDate).getTime() - Date.now()) /
+                (1000 * 60 * 60 * 24)
+            )
           )}일 전`}
       </div>
       <div className="font-bold">{question?.title}</div>

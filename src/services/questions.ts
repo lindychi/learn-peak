@@ -59,7 +59,10 @@ export const getRandomQuestion = async (
     .from("forgets")
     .select()
     .eq("user_id", userId)
-    .gt("dueDate", new Date().toISOString().slice(0, 10));
+    .gt(
+      "dueDate",
+      new Date().toISOString().slice(0, 16).replace("T", " ") + ":00"
+    );
   // 스킵 대상을 솎아내는 것이므로 gt가 맞음
   const skipIds = forgets?.map((forget) => forget.question_id) ?? [];
   console.log(skipIds);
@@ -81,24 +84,23 @@ export const getRandomQuestion = async (
 
   const targetQuestion =
     filteredQuestions[Math.floor(Math.random() * filteredQuestions.length)];
-  let targetForget;
-  if (targetQuestion) {
-    targetForget = forgets?.find(
-      (forget) => forget.question_id === targetQuestion.id
-    );
-  }
+  const { data: targetForget } = await supabase
+    .from("forgets")
+    .select()
+    .eq("user_id", userId)
+    .eq("question_id", targetQuestion.id);
 
   console.log(
     "randomQuestion",
     targetQuestion,
-    targetForget,
+    targetForget?.[0],
     filteredQuestions.length,
     questions.length
   );
 
   return {
     targetQuestion,
-    targetForget,
+    targetForget: targetForget?.[0],
     remainCount: filteredQuestions.length,
     totalCount: questions.length,
   };

@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../libs/supabase";
 import { FcGoogle } from "react-icons/fc";
 
-type Props = {};
-
-export default function Login({}: Props) {
+export default function Login() {
   const navigate = useNavigate();
 
   const googleLogin = async () => {

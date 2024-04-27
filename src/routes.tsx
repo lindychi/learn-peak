@@ -1,7 +1,7 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
-import App from "./App";
-import Login from "./pages/Login";
-import RandomQuestions from "./pages/Random";
+import App from "@/App";
+import Login from "@/pages/Login";
+import RandomQuestions from "@/pages/Random";
 
 export const routes = createBrowserRouter([
   {

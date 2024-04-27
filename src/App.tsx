@@ -1,9 +1,10 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { supabase } from "./libs/supabase";
+import { supabase } from "@/libs/supabase";
 import { useNavigate } from "react-router-dom";
-import { QuestionFormState } from "./types/questions";
-import { addQuestions } from "./services/questions";
-import { getUser } from "./services/user";
+import { QuestionFormState } from "@/types/questions";
+import { addQuestions } from "@/services/questions";
+import { getUser } from "@/services/user";
+import { Button } from "@/components/ui/button";
 
 function App() {
   const navigate = useNavigate();
@@ -96,15 +97,15 @@ function App() {
       <div>
         <div className="flex justify-between">
           {user}
-          <button onClick={logout}>Logout</button>
+          <Button onClick={logout}>Logout</Button>
         </div>
 
-        <button
+        <Button
           onClick={() => navigate("/random")}
           className="p-2 bg-emerald-300 rounded"
         >
           문제 풀이 고고띵
-        </button>
+        </Button>
 
         {user === "igam0000@gmail.com" && (
           <div>
@@ -147,12 +148,12 @@ function App() {
                 <textarea
                   id="answer"
                   name="answer"
-                  value={formState.answer}
+                  value={formState.subjectiveAnswer}
                   onChange={handleInputChange}
                   className="border-2 border-gray-300 rounded-md w-full p-2"
                 />
               </div>
-              <button type="submit">제출</button>
+              <Button type="submit">제출</Button>
             </form>
           </div>
         )}

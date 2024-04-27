@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/libs/supabase";
 import { FcGoogle } from "react-icons/fc";
+import { Button } from "@/components/ui/button";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -49,14 +50,14 @@ export default function Login() {
         {/* 구글, OAuth 로그인 섹션 */}
         <section>
           <div className="flex flex-col gap-2">
-            <button
+            <Button
               className="border-2 border-emerald-900 bg-white"
               onClick={async () => {
                 googleLogin();
               }}
             >
               <FcGoogle />
-            </button>
+            </Button>
           </div>
         </section>
       </div>

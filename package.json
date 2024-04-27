@@ -11,6 +11,7 @@
     "gen:types": "supabase gen types typescript --project-id fspgzcofjdzpznzvaxgg > src/types/database.types.ts"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.0.2",
     "@supabase/supabase-js": "^2.39.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

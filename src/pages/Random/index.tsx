@@ -5,6 +5,7 @@ import { Tables } from "@/types/database.types";
 import { updateOrInsertForget } from "@/services/forgets";
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
+import { Button } from "@/components/ui/button";
 
 export default function RandomQuestions() {
   const navigate = useNavigate();
@@ -76,14 +77,14 @@ export default function RandomQuestions() {
       return (
         <div>
           문제가 없습니다.
-          <button
+          <Button
             className="p-2 bg-emerald-300 rounded"
             onClick={() => {
               navigate("/");
             }}
           >
             뒤로가기
-          </button>
+          </Button>
         </div>
       );
     }
@@ -91,14 +92,14 @@ export default function RandomQuestions() {
 
   return (
     <div>
-      <button
+      <Button
         className="p-2 bg-emerald-300 rounded"
         onClick={() => {
           navigate("/");
         }}
       >
         뒤로가기
-      </button>
+      </Button>
       <div>
         남은 문제 수: {remainCount}/{totalCount}
       </div>
@@ -145,12 +146,12 @@ export default function RandomQuestions() {
             >
               통과
             </div>
-            <button
+            <Button
               onClick={() => setIsSubmit(true)}
               className="h-20 flex-1 flex items-center justify-center bg-gray-300 rounded-xl text-xl"
             >
               제출
-            </button>
+            </Button>
           </>
         )}
       </div>
@@ -172,24 +173,10 @@ export default function RandomQuestions() {
           }
         }}
       ></textarea>
-      {/* <button
-        onClick={() => setIsSubmit(true)}
-        className=" bg-blue-400 rounded-lg h-20 w-40"
-      >
-        제출
-      </button> */}
       {isSubmit && (
-        <div className="whitespace-pre-line">정답: {question?.answer}</div>
-        // <div>
-        //   <div className="flex justify-around">
-        //     <button className="p-2 bg-red-400" onClick={() => handleScore(-1)}>
-        //       오답
-        //     </button>
-        //     <button className="p-2 bg-blue-400" onClick={() => handleScore(1)}>
-        //       정답
-        //     </button>
-        //   </div>
-        // </div>
+        <div className="whitespace-pre-line">
+          정답: {question?.subjectiveAnswer}
+        </div>
       )}
     </div>
   );

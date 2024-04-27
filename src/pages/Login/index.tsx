@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../libs/supabase";
+import { supabase } from "@/libs/supabase";
 import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {

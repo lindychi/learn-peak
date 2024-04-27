@@ -1,5 +1,5 @@
-import { supabase } from "../libs/supabase";
-import { QuestionFormState } from "../types/questions";
+import { supabase } from "@/libs/supabase";
+import { QuestionFormState } from "@/types/questions";
 
 export const addQuestions = async (formState: QuestionFormState) => {
   const { data: questions, error } = await supabase
@@ -8,7 +8,7 @@ export const addQuestions = async (formState: QuestionFormState) => {
       {
         title: formState.title,
         contentText: formState.contentText,
-        answer: formState.answer,
+        subjectiveAnswer: formState.subjectiveAnswer,
       },
     ])
     .select();

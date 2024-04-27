@@ -1,5 +1,5 @@
-import { supabase } from "../libs/supabase";
-import { Tables } from "../types/database.types";
+import { supabase } from "@/libs/supabase";
+import { Tables } from "@/types/database.types";
 
 export const updateOrInsertForget = async (
   userId: string,

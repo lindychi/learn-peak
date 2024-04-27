@@ -4,95 +4,95 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
   public: {
     Tables: {
       forgets: {
         Row: {
-          created_at: string
-          dueDate: string | null
-          id: number
-          question_id: number | null
-          user_id: string | null
-          weight: number | null
-        }
+          created_at: string;
+          dueDate: string | null;
+          id: number;
+          question_id: number | null;
+          user_id: string | null;
+          weight: number | null;
+        };
         Insert: {
-          created_at?: string
-          dueDate?: string | null
-          id?: number
-          question_id?: number | null
-          user_id?: string | null
-          weight?: number | null
-        }
+          created_at?: string;
+          dueDate?: string | null;
+          id?: number;
+          question_id?: number | null;
+          user_id?: string | null;
+          weight?: number | null;
+        };
         Update: {
-          created_at?: string
-          dueDate?: string | null
-          id?: number
-          question_id?: number | null
-          user_id?: string | null
-          weight?: number | null
-        }
+          created_at?: string;
+          dueDate?: string | null;
+          id?: number;
+          question_id?: number | null;
+          user_id?: string | null;
+          weight?: number | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "public_forgets_question_id_fkey"
-            columns: ["question_id"]
-            isOneToOne: false
-            referencedRelation: "questions"
-            referencedColumns: ["id"]
+            foreignKeyName: "public_forgets_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: false;
+            referencedRelation: "questions";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "public_forgets_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: "public_forgets_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
           }
-        ]
-      }
+        ];
+      };
       questions: {
         Row: {
-          answer: string | null
-          contentImage: string | null
-          contentText: string | null
-          created_at: string
-          id: number
-          title: string | null
-        }
+          subjectiveAnswer: string | null;
+          contentImage: string | null;
+          contentText: string | null;
+          created_at: string;
+          id: number;
+          title: string | null;
+        };
         Insert: {
-          answer?: string | null
-          contentImage?: string | null
-          contentText?: string | null
-          created_at?: string
-          id?: number
-          title?: string | null
-        }
+          answer?: string | null;
+          contentImage?: string | null;
+          contentText?: string | null;
+          created_at?: string;
+          id?: number;
+          title?: string | null;
+        };
         Update: {
-          answer?: string | null
-          contentImage?: string | null
-          contentText?: string | null
-          created_at?: string
-          id?: number
-          title?: string | null
-        }
-        Relationships: []
-      }
-    }
+          answer?: string | null;
+          contentImage?: string | null;
+          contentText?: string | null;
+          created_at?: string;
+          id?: number;
+          title?: string | null;
+        };
+        Relationships: [];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -105,7 +105,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
@@ -113,11 +113,11 @@ export type Tables<
       Database["public"]["Views"])
   ? (Database["public"]["Tables"] &
       Database["public"]["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
-  : never
+  : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -128,17 +128,17 @@ export type TablesInsert<
     : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
   ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
-  : never
+  : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -149,17 +149,17 @@ export type TablesUpdate<
     : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
   ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
-  : never
+  : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -172,4 +172,4 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
   ? Database["public"]["Enums"][PublicEnumNameOrOptions]
-  : never
+  : never;

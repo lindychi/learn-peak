@@ -12,7 +12,7 @@ function App() {
     title: "",
     contentText: "",
     contentImage: undefined,
-    answer: "",
+    subjectiveAnswer: "",
   });
   const [previewImage, setPreviewImage] = useState<string | undefined>();
 
@@ -74,7 +74,7 @@ function App() {
         title: "",
         contentText: "",
         contentImage: undefined,
-        answer: "",
+        subjectiveAnswer: "",
       });
       setPreviewImage(undefined);
 

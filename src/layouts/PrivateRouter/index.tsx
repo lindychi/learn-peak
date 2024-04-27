@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../libs/supabase";
+import { supabase } from "@/libs/supabase";
 
 type Props = { children: JSX.Element };
 

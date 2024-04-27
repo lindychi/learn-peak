@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { getRandomQuestion } from "../../services/questions";
-import { getUser } from "../../services/user";
-import { Tables } from "../../types/database.types";
-import { updateOrInsertForget } from "../../services/forgets";
+import { getRandomQuestion } from "@/services/questions";
+import { getUser } from "@/services/user";
+import { Tables } from "@/types/database.types";
+import { updateOrInsertForget } from "@/services/forgets";
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 

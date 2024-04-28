@@ -5,6 +5,7 @@ import { QuestionFormState } from "@/types/questions";
 import { addQuestions } from "@/services/questions";
 import { getUser } from "@/services/user";
 import { Button } from "@/components/ui/button";
+import SubjectCheckList from "@/components/SubjectCheckList";
 
 function App() {
   const navigate = useNavigate();
@@ -94,18 +95,13 @@ function App() {
 
   return (
     <>
-      <div>
-        <div className="flex justify-between">
+      <div className="p-2">
+        <div className="flex justify-between items-center">
           {user}
-          <Button onClick={logout}>Logout</Button>
+          <Button onClick={logout}>로그아웃</Button>
         </div>
 
-        <Button
-          onClick={() => navigate("/random")}
-          className="p-2 bg-emerald-300 rounded"
-        >
-          문제 풀이 고고띵
-        </Button>
+        <SubjectCheckList />
 
         {user === "igam0000@gmail.com" && (
           <div>

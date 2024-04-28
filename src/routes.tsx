@@ -2,6 +2,8 @@ import { Outlet, createBrowserRouter } from "react-router-dom";
 import App from "@/App";
 import Login from "@/pages/Login";
 import RandomQuestions from "@/pages/Random";
+import AdminLayout from "./layouts/AdminLayout";
+import AdminSubject from "./components/admin/Subject";
 
 export const routes = createBrowserRouter([
   {
@@ -13,4 +15,14 @@ export const routes = createBrowserRouter([
     ],
   },
   { path: "login", element: <Login /> },
+  {
+    path: "admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "subjects",
+        element: <AdminSubject />,
+      },
+    ],
+  },
 ]);

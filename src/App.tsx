@@ -5,7 +5,7 @@ import { QuestionFormState } from "@/types/questions";
 import { addQuestions } from "@/services/questions";
 import { getUser } from "@/services/user";
 import { Button } from "@/components/ui/button";
-import SubjectCheckList from "@/components/SubjectCheckList";
+import SubjectCheckList from "@/components/FO/SubjectCheckList";
 
 function App() {
   const navigate = useNavigate();

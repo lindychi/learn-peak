@@ -1,5 +1,3 @@
-import React from "react";
-
 import { TableInfo } from "@/types/table";
 
 import { getQuestions, getQuestionsPaginated } from "@/services/questions";

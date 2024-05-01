@@ -60,7 +60,7 @@ export default function AdminAddQuestionDialog() {
     (index: number) =>
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { value } = e.target;
-      console.log(value, index);
+
       setFormState((prev) => {
         const wrongAnswers = prev.wrongAnswers ?? ["", "", ""];
         return {
@@ -91,8 +91,7 @@ export default function AdminAddQuestionDialog() {
     // 여기서 formState를 사용하여 필요한 로직을 처리합니다.
 
     try {
-      const data = await addQuestions(formState);
-      console.log(data);
+      await addQuestions(formState);
 
       setFormState((prev) => ({
         ...prev,

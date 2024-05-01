@@ -66,7 +66,6 @@ export const getRandomQuestion = async (
     );
   // 스킵 대상을 솎아내는 것이므로 gt가 맞음
   const skipIds = forgets?.map((forget) => forget.question_id) ?? [];
-  // console.log(skipIds);
 
   const { data: questions, error } = await supabase
     .from("questions")
@@ -76,8 +75,6 @@ export const getRandomQuestion = async (
     throw error;
   }
 
-  console.log("remain questions: ", questions.length);
-
   const filteredQuestions = questions.filter((questions) => {
     if (skipIds.includes(questions.id) || questions.id === prevQuestionId) {
       return false;
@@ -86,8 +83,12 @@ export const getRandomQuestion = async (
     }
   });
 
-  const targetQuestion =
-    filteredQuestions[Math.floor(Math.random() * filteredQuestions.length)];
+  if (filteredQuestions.length === 0) {
+    throw new Error("No more questions");
+  }
+
+  const targetIndex = Math.floor(Math.random() * filteredQuestions.length);
+  const targetQuestion = filteredQuestions[targetIndex];
   const { data: targetForget } = await supabase
     .from("forgets")
     .select()

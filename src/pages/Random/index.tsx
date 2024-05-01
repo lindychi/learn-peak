@@ -18,6 +18,8 @@ export default function RandomQuestions() {
   const [input, setInput] = useState<string>("");
   const [remainCount, setRemainCount] = useState<number | undefined>();
   const [totalCount, setTotalCount] = useState<number | undefined>();
+  const [objectiveAnswers, setObjectiveAnswers] = useState<string[]>([]);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | undefined>();
 
   const refreshQuestion = async () => {
     setIsSubmit(false);
@@ -31,11 +33,22 @@ export default function RandomQuestions() {
           setRemainCount(remainCount);
           setTotalCount(totalCount);
         })
+        .catch((e) => {
+          console.error(e);
+          setQuestion(undefined);
+        })
         .finally(() => {
           setLoading(false);
         });
     }
   };
+  function shuffle(array: string[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
 
   const loadInfo = async () => {
     try {
@@ -48,6 +61,15 @@ export default function RandomQuestions() {
       setForget(targetForget);
       setRemainCount(remainCount);
       setTotalCount(totalCount);
+      if (targetQuestion.type === "objective") {
+        if (targetQuestion.wrong_answers) {
+          const wrongAnswers = [
+            ...JSON.parse(targetQuestion.wrong_answers),
+            targetQuestion.subjective_answer,
+          ];
+          setObjectiveAnswers(shuffle(wrongAnswers));
+        }
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -123,57 +145,103 @@ export default function RandomQuestions() {
             )
           )}일 전`}
       </div>
-      <div className="h-20 flex">
-        {isSubmit ? (
-          <>
-            <div
-              className="h-20 flex-1 flex items-center justify-center bg-red-300 rounded-xl text-xl"
-              onClick={() => handleScore(-1)}
-            >
-              오답
-            </div>
-            <div
-              className="h-20 flex-1 flex items-center justify-center bg-blue-300 rounded-xl text-xl"
-              onClick={() => handleScore(1)}
-            >
-              정답
-            </div>
-          </>
-        ) : (
-          <>
-            <div
-              className="h-20 flex-1 flex items-center justify-center bg-green-300 rounded-xl text-xl"
-              onClick={() => handleScore(1)}
-            >
-              통과
-            </div>
-            <Button
-              onClick={() => setIsSubmit(true)}
-              className="h-20 flex-1 flex items-center justify-center bg-gray-300 rounded-xl text-xl"
-            >
-              제출
-            </Button>
-          </>
-        )}
-      </div>
-      <div className="font-bold">{question?.title}</div>
+      {question.type === "subjective" && (
+        <div className="h-20 flex">
+          {isSubmit ? (
+            <>
+              <div
+                className="h-20 flex-1 flex items-center justify-center bg-red-300 rounded-xl text-xl"
+                onClick={() => handleScore(-1)}
+              >
+                오답
+              </div>
+              <div
+                className="h-20 flex-1 flex items-center justify-center bg-blue-300 rounded-xl text-xl"
+                onClick={() => handleScore(1)}
+              >
+                정답
+              </div>
+            </>
+          ) : (
+            <>
+              <div
+                className="h-20 flex-1 flex items-center justify-center bg-green-300 rounded-xl text-xl"
+                onClick={() => handleScore(1)}
+              >
+                통과
+              </div>
+              <Button
+                onClick={() => setIsSubmit(true)}
+                className="h-20 flex-1 flex items-center justify-center bg-gray-300 rounded-xl text-xl"
+              >
+                제출
+              </Button>
+            </>
+          )}
+        </div>
+      )}
+      <div className="font-bold text-xl">{question?.title}</div>
       <div>
         <div className=" whitespace-pre-line">{question?.content_text}</div>
         {question?.content_image && (
           <img src={question?.content_image} alt={"question-content"} />
         )}
       </div>
-      답변 입력:
-      <textarea
-        className="border-2 border-gray-300 rounded-md w-full p-2"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            setIsSubmit(true);
-          }
-        }}
-      ></textarea>
+      {question.type === "subjective" && (
+        <>
+          답변 입력:
+          <textarea
+            className="border-2 border-gray-300 rounded-md w-full p-2"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setIsSubmit(true);
+              }
+            }}
+          ></textarea>
+        </>
+      )}
+      {question.type === "objective" && (
+        <div className="flex flex-col gap-2 text-lg">
+          {objectiveAnswers.map((answer, index) => (
+            <div
+              key={index}
+              className={clsx("rounded-md cursor-pointer", {
+                "bg-green-300":
+                  selectedAnswer && answer === question.subjective_answer,
+                "text-red-500":
+                  selectedAnswer &&
+                  selectedAnswer === answer &&
+                  answer !== question.subjective_answer,
+              })}
+              onClick={async () => {
+                if (!isSubmit) {
+                  setSelectedAnswer(answer);
+                  await updateOrInsertForget(
+                    userId as string,
+                    question?.id,
+                    answer === question.subjective_answer ? 1 : -1,
+                    forget
+                  );
+                }
+              }}
+            >
+              {index + 1}. {answer}
+            </div>
+          ))}
+
+          {selectedAnswer && (
+            <Button
+              onClick={() => {
+                refreshQuestion();
+              }}
+            >
+              다음
+            </Button>
+          )}
+        </div>
+      )}
       {isSubmit && (
         <div className="whitespace-pre-line">
           정답: {question?.subjective_answer}

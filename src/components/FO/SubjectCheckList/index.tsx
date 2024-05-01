@@ -38,13 +38,8 @@ export default function SubjectCheckList() {
 
   const loadSubjects = async () => {
     getSubjects().then((subjects) => {
-      console.log(subjects);
       setSubjects(subjects);
     });
-  };
-
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log(data);
   };
 
   useEffect(() => {
@@ -53,10 +48,7 @@ export default function SubjectCheckList() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-2"
-      >
+      <form className="flex flex-col gap-2">
         <FormField
           control={form.control}
           name="subjects"
@@ -68,7 +60,6 @@ export default function SubjectCheckList() {
                   control={form.control}
                   name="subjects"
                   render={({ field }) => {
-                    console.log(field, field.value, subject.id);
                     return (
                       <FormItem
                         key={subject.id}

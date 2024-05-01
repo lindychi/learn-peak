@@ -7,7 +7,6 @@ export const updateOrInsertForget = async (
   weight: number,
   forget?: Tables<"forgets">
 ) => {
-  console.log(questionId, weight, forget);
   if (forget) {
     let calcWeight;
     if (weight > 0) {
@@ -23,14 +22,12 @@ export const updateOrInsertForget = async (
         calcWeight = weight;
       }
     }
-    console.log(calcWeight, "<=", forget?.weight, "+", weight);
 
     const dueDate =
       new Date(new Date().getTime() + 1000 * 60 * calcWeight)
         .toISOString()
         .slice(0, 16)
         .replace("T", " ") + ":00";
-    console.log("failed dueDate" + dueDate);
 
     const { error } = await supabase
       .from("forgets")
@@ -47,14 +44,12 @@ export const updateOrInsertForget = async (
     if (calcWeight < 0) {
       calcWeight = -1;
     }
-    console.log(calcWeight, "<=", weight);
 
     const dueDate =
       new Date(new Date().getTime() + 1000 * 60 * calcWeight)
         .toISOString()
         .slice(0, 16)
         .replace("T", " ") + ":00";
-    console.log("failed dueDate" + dueDate);
 
     const { error } = await supabase
       .from("forgets")

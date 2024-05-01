@@ -20,6 +20,17 @@ export default function AdminQuestionsPage() {
       key: "title",
     },
     {
+      title: "문제 타입",
+      key: "type",
+      render: (value: string) => {
+        if (value === "objective") {
+          return "객관식";
+        } else if (value === "subjective") {
+          return "주관식";
+        }
+      },
+    },
+    {
       title: "생성일",
       key: "created_at",
       render: (value: string) => {
@@ -34,8 +45,8 @@ export default function AdminQuestionsPage() {
     <div className="px-5">
       <Card>
         <CardHeader>
-          <CardTitle>Subjects</CardTitle>
-          <CardDescription>subjects..!</CardDescription>
+          <CardTitle>Questions</CardTitle>
+          <CardDescription>문제 리스트</CardDescription>
         </CardHeader>
         <CardContent>
           <AdminTable

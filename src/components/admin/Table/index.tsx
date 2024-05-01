@@ -69,7 +69,9 @@ export default function AdminTable<T extends WithId>({
         <TableHeader>
           <TableRow>
             {tableInfo.map((row) => (
-              <TableHead className={row.className}>{row.title}</TableHead>
+              <TableHead key={row.key} className={row.className}>
+                {row.title}
+              </TableHead>
             ))}
           </TableRow>
         </TableHeader>
@@ -77,7 +79,7 @@ export default function AdminTable<T extends WithId>({
           {items.map((subject) => (
             <TableRow key={subject.id}>
               {tableInfo.map((row) => (
-                <TableCell className={row.className}>
+                <TableCell key={row.key} className={row.className}>
                   {row.render ? (
                     <>{row.render(subject[row.key as keyof T] as string)}</>
                   ) : (

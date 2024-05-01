@@ -9,8 +9,8 @@ export const addQuestions = async (formState: QuestionFormState) => {
     .insert([
       {
         title: formState.title,
-        contentText: formState.contentText,
-        subjectiveAnswer: formState.subjectiveAnswer,
+        content_text: formState.contentText,
+        subjective_answer: formState.subjectiveAnswer,
       },
     ])
     .select();
@@ -33,12 +33,6 @@ export const addQuestions = async (formState: QuestionFormState) => {
       .from("questions")
       .getPublicUrl(path);
     if (data.publicUrl) {
-      console.log(
-        "publicUrl",
-        data.publicUrl,
-        "targetQuestion",
-        questions[0].id
-      );
       const { error } = await supabase
         .from("questions")
         .update({ content_image: data.publicUrl })
@@ -109,7 +103,9 @@ export const getRandomQuestion = async (
 };
 
 export const getQuestions = async () => {
-  const { data: questions, error } = await supabase.from("questions").select();
+  const { data: questions, error } = await supabase
+    .from("questions")
+    .select("*");
   if (error) {
     throw error;
   }
@@ -120,7 +116,7 @@ export const getQuestions = async () => {
 export const getQuestionsPaginated = async (page: number, limit: number) => {
   const { data: questions, error } = await supabase
     .from("questions")
-    .select()
+    .select("*")
     .range(page * limit, (page + 1) * limit - 1);
   if (error) {
     throw error;

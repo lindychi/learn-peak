@@ -3,6 +3,7 @@ import { Tables } from "@/types/database.types";
 
 export const updateOrInsertForget = async (
   userId: string,
+  subjectId: string,
   questionId: string,
   weight: number,
   forget?: Tables<"forgets">
@@ -45,6 +46,10 @@ export const updateOrInsertForget = async (
       calcWeight = -1;
     }
 
+    console.log(
+      new Date(new Date().getTime() + 1000 * 60 * calcWeight),
+      new Date(new Date().getTime() + 1000 * 60 * calcWeight).toISOString()
+    );
     const dueDate =
       new Date(new Date().getTime() + 1000 * 60 * calcWeight)
         .toISOString()
@@ -59,6 +64,7 @@ export const updateOrInsertForget = async (
           question_id: questionId,
           weight: calcWeight,
           due_date: dueDate,
+          subject_id: subjectId,
         },
       ])
       .select();

@@ -61,7 +61,7 @@ export const getRandomQuestion = async (
     .in("subject_id", subjects)
     .eq("user_id", userId)
     .gt(
-      "dueDate",
+      "due_date",
       new Date().toISOString().slice(0, 16).replace("T", " ") + ":00"
     );
   // 스킵 대상을 솎아내는 것이므로 gt가 맞음
@@ -75,13 +75,20 @@ export const getRandomQuestion = async (
     throw error;
   }
 
-  const filteredQuestions = questions.filter((questions) => {
-    if (skipIds.includes(questions.id) || questions.id === prevQuestionId) {
+  let filteredQuestions = questions.filter((questions) => {
+    if (skipIds.includes(questions.id)) {
       return false;
     } else {
       return true;
     }
   });
+
+  // 마지막 한 문제를 계속 틀릴때는 답변 순서만 바꿔서 출력하도록 설정
+  if (filteredQuestions.length > 1) {
+    filteredQuestions = filteredQuestions.filter(
+      (question) => question.id !== prevQuestionId
+    );
+  }
 
   if (filteredQuestions.length === 0) {
     throw new Error("No more questions");

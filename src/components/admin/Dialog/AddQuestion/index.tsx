@@ -144,7 +144,7 @@ export default function AdminAddQuestionDialog() {
               onValueChange={(value) => {
                 setFormState({
                   ...formState,
-                  type: value as QuestionType,
+                  subjectId: value as QuestionType,
                 });
               }}
               defaultValue={formState.subjectId}
@@ -200,17 +200,19 @@ export default function AdminAddQuestionDialog() {
               className="border-2 border-gray-300 rounded-md w-full p-2"
             />
           </div>
-          <div>
-            <label htmlFor="contentImage">문제 내용 (이미지):</label>
-            <input
-              type="file"
-              id="contentImage"
-              name="contentImage"
-              onChange={handleImageChange}
-              ref={fileInputRef} // 참조 설정
-            />
-            {previewImage && <img src={previewImage} alt="Preview" />}
-          </div>
+          {formState.type === "subjective" && (
+            <div>
+              <label htmlFor="contentImage">문제 내용 (이미지):</label>
+              <input
+                type="file"
+                id="contentImage"
+                name="contentImage"
+                onChange={handleImageChange}
+                ref={fileInputRef} // 참조 설정
+              />
+              {previewImage && <img src={previewImage} alt="Preview" />}
+            </div>
+          )}
           <div>
             <label htmlFor="subjectiveAnswer">답:</label>
             <textarea

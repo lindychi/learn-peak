@@ -23,8 +23,12 @@ export default function RandomQuestions() {
 
   const refreshQuestion = async () => {
     setIsSubmit(false);
-    setInput("");
     setLoading(true);
+
+    setInput("");
+    setSelectedAnswer(undefined);
+    setObjectiveAnswers([]);
+
     if (userId) {
       getRandomQuestion(userId, state?.subjects ?? [], question?.id)
         .then(({ targetQuestion, targetForget, remainCount, totalCount }) => {
@@ -32,6 +36,15 @@ export default function RandomQuestions() {
           setForget(targetForget);
           setRemainCount(remainCount);
           setTotalCount(totalCount);
+          if (targetQuestion.type === "objective") {
+            if (targetQuestion.wrong_answers) {
+              const wrongAnswers = [
+                ...JSON.parse(targetQuestion.wrong_answers),
+                targetQuestion.subjective_answer,
+              ];
+              setObjectiveAnswers(shuffle(wrongAnswers));
+            }
+          }
         })
         .catch((e) => {
           console.error(e);
@@ -83,7 +96,13 @@ export default function RandomQuestions() {
     } else if (!question) {
       alert("문제를 불러오는 중입니다.");
     } else {
-      await updateOrInsertForget(userId, question?.id, score, forget);
+      await updateOrInsertForget(
+        userId,
+        question.subject_id as string,
+        question?.id,
+        score,
+        forget
+      );
       refreshQuestion();
     }
     // 새 문제 불러오기
@@ -133,7 +152,7 @@ export default function RandomQuestions() {
           "text-green-500": (forget?.weight ?? 0) > 0,
         })}
       >
-        {forget?.weight ?? 0}
+        {forget?.weight ?? 0}분 뒤 반복
       </div>
       {/* dueDate가 오늘로부터 몇일전인지 출력 */}
       <div>
@@ -220,6 +239,7 @@ export default function RandomQuestions() {
                   setSelectedAnswer(answer);
                   await updateOrInsertForget(
                     userId as string,
+                    question.subject_id as string,
                     question?.id,
                     answer === question.subjective_answer ? 1 : -1,
                     forget

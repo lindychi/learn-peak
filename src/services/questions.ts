@@ -1,4 +1,6 @@
 import { supabase } from "@/libs/supabase";
+import { Tables } from "@/types/database.types";
+
 import { QuestionFormState } from "@/types/questions";
 
 export const addQuestions = async (formState: QuestionFormState) => {
@@ -39,7 +41,7 @@ export const addQuestions = async (formState: QuestionFormState) => {
       );
       const { error } = await supabase
         .from("questions")
-        .update({ contentImage: data.publicUrl })
+        .update({ content_image: data.publicUrl })
         .eq("id", questions[0].id);
       if (error) {
         console.error(error);
@@ -53,7 +55,7 @@ export const addQuestions = async (formState: QuestionFormState) => {
 
 export const getRandomQuestion = async (
   userId: string,
-  prevQuestionId?: number
+  prevQuestionId?: string
 ) => {
   const { data: forgets } = await supabase
     .from("forgets")
@@ -104,4 +106,25 @@ export const getRandomQuestion = async (
     remainCount: filteredQuestions.length,
     totalCount: questions.length,
   };
+};
+
+export const getQuestions = async () => {
+  const { data: questions, error } = await supabase.from("questions").select();
+  if (error) {
+    throw error;
+  }
+
+  return questions as Tables<"questions">[];
+};
+
+export const getQuestionsPaginated = async (page: number, limit: number) => {
+  const { data: questions, error } = await supabase
+    .from("questions")
+    .select()
+    .range(page * limit, (page + 1) * limit - 1);
+  if (error) {
+    throw error;
+  }
+
+  return questions as Tables<"questions">[];
 };

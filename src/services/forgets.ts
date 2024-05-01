@@ -3,7 +3,7 @@ import { Tables } from "@/types/database.types";
 
 export const updateOrInsertForget = async (
   userId: string,
-  questionId: number,
+  questionId: string,
   weight: number,
   forget?: Tables<"forgets">
 ) => {
@@ -35,7 +35,7 @@ export const updateOrInsertForget = async (
     const { error } = await supabase
       .from("forgets")
       .update({
-        dueDate: dueDate,
+        due_date: dueDate,
         weight: calcWeight,
       })
       .eq("id", forget.id);
@@ -63,7 +63,7 @@ export const updateOrInsertForget = async (
           user_id: userId,
           question_id: questionId,
           weight: calcWeight,
-          dueDate: dueDate,
+          due_date: dueDate,
         },
       ])
       .select();

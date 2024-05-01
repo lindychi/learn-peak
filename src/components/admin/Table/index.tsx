@@ -1,3 +1,8 @@
+import React, { useEffect } from "react";
+import { MoreHorizontal } from "lucide-react";
+
+import { TableInfo } from "@/types/table";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -20,9 +25,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MoreHorizontal } from "lucide-react";
-import React, { useEffect } from "react";
-import { TableInfo } from "../Subject";
 
 type WithId = {
   id: string; // 또는 다른 타입으로 변경 가능
@@ -77,7 +79,7 @@ export default function AdminTable<T extends WithId>({
               {tableInfo.map((row) => (
                 <TableCell className={row.className}>
                   {row.render ? (
-                    <>{row.render(subject[row.key as keyof T])}</>
+                    <>{row.render(subject[row.key as keyof T] as string)}</>
                   ) : (
                     <>{subject[row.key as keyof T]}</>
                   )}

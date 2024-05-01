@@ -1,8 +1,13 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import {
+  // ChangeEvent,
+  useEffect,
+  // useRef,
+  useState,
+} from "react";
 import { supabase } from "@/libs/supabase";
 import { useNavigate } from "react-router-dom";
-import { QuestionFormState } from "@/types/questions";
-import { addQuestions } from "@/services/questions";
+// import { QuestionFormState } from "@/types/questions";
+// import { addQuestions } from "@/services/questions";
 import { getUser } from "@/services/user";
 import { Button } from "@/components/ui/button";
 import SubjectCheckList from "@/components/FO/SubjectCheckList";
@@ -10,16 +15,17 @@ import SubjectCheckList from "@/components/FO/SubjectCheckList";
 function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState<string | undefined>();
-  const [formState, setFormState] = useState<QuestionFormState>({
-    title: "",
-    contentText: "",
-    contentImage: undefined,
-    subjectiveAnswer: "",
-  });
-  const [previewImage, setPreviewImage] = useState<string | undefined>();
+
+  // const [formState, setFormState] = useState<QuestionFormState>({
+  //   title: "",
+  //   contentText: "",
+  //   contentImage: undefined,
+  //   subjectiveAnswer: "",
+  // });
+  // const [previewImage, setPreviewImage] = useState<string | undefined>();
 
   // 파일 입력 필드에 대한 참조 생성
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  // const fileInputRef = useRef<HTMLInputElement>(null);
 
   const logout = async () => {
     try {
@@ -40,54 +46,54 @@ function App() {
     setUser(user.email);
   };
 
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
+  // const handleInputChange = (
+  //   e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setFormState({
+  //     ...formState,
+  //     [name]: value,
+  //   });
+  // };
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-      setFormState({
-        ...formState,
-        contentImage: e.target.files[0],
-      });
-    }
-  };
+  // const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setPreviewImage(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(e.target.files[0]);
+  //     setFormState({
+  //       ...formState,
+  //       contentImage: e.target.files[0],
+  //     });
+  //   }
+  // };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // 여기서 formState를 사용하여 필요한 로직을 처리합니다.
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   // 여기서 formState를 사용하여 필요한 로직을 처리합니다.
 
-    try {
-      const data = await addQuestions(formState);
-      console.log(data);
+  //   try {
+  //     const data = await addQuestions(formState);
+  //     console.log(data);
 
-      setFormState({
-        title: "",
-        contentText: "",
-        contentImage: undefined,
-        subjectiveAnswer: "",
-      });
-      setPreviewImage(undefined);
+  //     setFormState({
+  //       title: "",
+  //       contentText: "",
+  //       contentImage: undefined,
+  //       subjectiveAnswer: "",
+  //     });
+  //     setPreviewImage(undefined);
 
-      // 파일 입력 필드 직접 초기화
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  //     // 파일 입력 필드 직접 초기화
+  //     if (fileInputRef.current) {
+  //       fileInputRef.current.value = "";
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
 
   useEffect(() => {
     loadUser();
@@ -103,7 +109,7 @@ function App() {
 
         <SubjectCheckList />
 
-        {user === "igam0000@gmail.com" && (
+        {/* {user === "igam0000@gmail.com" && (
           <div>
             <div>문제 추가</div>
 
@@ -152,7 +158,7 @@ function App() {
               <Button type="submit">제출</Button>
             </form>
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

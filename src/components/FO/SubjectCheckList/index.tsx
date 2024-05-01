@@ -4,6 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
+import { Tables } from "@/types/database.types";
+
+import { getSubjects } from "@/services/subjects";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,9 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { getSubjects } from "@/services/subjects";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Tables } from "@/types/database.types";
 
 const FormSchema = z.object({
   subjects: z.array(z.string()), // subject는 문자열 배열로 가정합니다.
@@ -66,6 +68,7 @@ export default function SubjectCheckList() {
                   control={form.control}
                   name="subjects"
                   render={({ field }) => {
+                    console.log(field, field.value, subject.id);
                     return (
                       <FormItem
                         key={subject.id}
@@ -73,30 +76,23 @@ export default function SubjectCheckList() {
                       >
                         <FormControl>
                           <Checkbox
-                            checked={field.value?.includes(subject.id)}
+                            checked={
+                              Array.isArray(field?.value) &&
+                              field.value.includes(subject?.id)
+                            }
                             onCheckedChange={(checked) => {
-                              window.localStorage.setItem(
-                                "subjects",
-                                JSON.stringify(
-                                  checked
-                                    ? field.onChange([
-                                        ...field.value,
-                                        subject.id,
-                                      ])
-                                    : field.onChange(
-                                        field.value?.filter(
-                                          (value) => value !== subject.id
-                                        )
-                                      )
-                                )
-                              );
-                              return checked
-                                ? field.onChange([...field.value, subject.id])
-                                : field.onChange(
-                                    field.value?.filter(
+                              const newValue = Array.isArray(field.value)
+                                ? checked
+                                  ? [...field.value, subject.id]
+                                  : field.value.filter(
                                       (value) => value !== subject.id
                                     )
-                                  );
+                                : [subject.id]; // if field.value is not an array, initialize it as one
+                              window.localStorage.setItem(
+                                "subjects",
+                                JSON.stringify(newValue)
+                              );
+                              field.onChange(newValue);
                             }}
                           />
                         </FormControl>

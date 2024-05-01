@@ -2,8 +2,9 @@ import React from "react";
 
 import { TableInfo } from "@/types/table";
 
-import { getSubjects, getSubjectsPaginated } from "@/services/subjects";
+import { getQuestions, getQuestionsPaginated } from "@/services/questions";
 
+import AdminTable from "@/components/admin/Table";
 import {
   Card,
   CardContent,
@@ -11,9 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import AdminTable from "../Table";
 
-export default function AdminSubject() {
+export default function AdminQuestionsPage() {
   const tableInfo: TableInfo[] = [
     {
       title: "종목",
@@ -40,8 +40,8 @@ export default function AdminSubject() {
         <CardContent>
           <AdminTable
             tableInfo={tableInfo}
-            getTotalItems={getSubjects}
-            getItems={getSubjectsPaginated}
+            getTotalItems={getQuestions}
+            getItems={getQuestionsPaginated}
           />
         </CardContent>
       </Card>

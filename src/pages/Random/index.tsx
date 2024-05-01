@@ -114,10 +114,10 @@ export default function RandomQuestions() {
       </div>
       {/* dueDate가 오늘로부터 몇일전인지 출력 */}
       <div>
-        {forget?.dueDate &&
+        {forget?.due_date &&
           `마지막 정답일: ${Math.abs(
             Math.floor(
-              (new Date(forget?.dueDate).getTime() - Date.now()) /
+              (new Date(forget?.due_date).getTime() - Date.now()) /
                 (1000 * 60 * 60 * 24)
             )
           )}일 전`}
@@ -157,9 +157,9 @@ export default function RandomQuestions() {
       </div>
       <div className="font-bold">{question?.title}</div>
       <div>
-        <div className=" whitespace-pre-line">{question?.contentText}</div>
-        {question?.contentImage && (
-          <img src={question?.contentImage} alt={"question-content"} />
+        <div className=" whitespace-pre-line">{question?.content_text}</div>
+        {question?.content_image && (
+          <img src={question?.content_image} alt={"question-content"} />
         )}
       </div>
       답변 입력:
@@ -175,7 +175,7 @@ export default function RandomQuestions() {
       ></textarea>
       {isSubmit && (
         <div className="whitespace-pre-line">
-          정답: {question?.subjectiveAnswer}
+          정답: {question?.subjective_answer}
         </div>
       )}
     </div>

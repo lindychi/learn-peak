@@ -114,6 +114,7 @@ export default function AdminTable<T extends WithId>({
             if (pageCount < pageItem) return null;
             return (
               <PaginationItem
+                key={pageItem}
                 onClick={() => {
                   setPage(pageItem - 1);
                 }}

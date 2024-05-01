@@ -8,9 +8,12 @@ export const addQuestions = async (formState: QuestionFormState) => {
     .from("questions")
     .insert([
       {
+        type: formState.type,
         title: formState.title,
         content_text: formState.contentText,
         subjective_answer: formState.subjectiveAnswer,
+        wrong_answers: JSON.stringify(formState.wrongAnswers),
+        subject_id: formState.subjectId,
       },
     ])
     .select();
@@ -49,11 +52,13 @@ export const addQuestions = async (formState: QuestionFormState) => {
 
 export const getRandomQuestion = async (
   userId: string,
+  subjects: string[],
   prevQuestionId?: string
 ) => {
   const { data: forgets } = await supabase
     .from("forgets")
     .select()
+    .in("subject_id", subjects)
     .eq("user_id", userId)
     .gt(
       "dueDate",
@@ -65,10 +70,13 @@ export const getRandomQuestion = async (
 
   const { data: questions, error } = await supabase
     .from("questions")
-    .select("*");
+    .select("*")
+    .in("subject_id", subjects);
   if (error) {
     throw error;
   }
+
+  console.log("remain questions: ", questions.length);
 
   const filteredQuestions = questions.filter((questions) => {
     if (skipIds.includes(questions.id) || questions.id === prevQuestionId) {
@@ -83,16 +91,7 @@ export const getRandomQuestion = async (
   const { data: targetForget } = await supabase
     .from("forgets")
     .select()
-    .eq("user_id", userId)
     .eq("question_id", targetQuestion.id);
-
-  // console.log(
-  //   "randomQuestion",
-  //   targetQuestion,
-  //   targetForget?.[0],
-  //   filteredQuestions.length,
-  //   questions.length
-  // );
 
   return {
     targetQuestion,

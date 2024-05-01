@@ -3,12 +3,13 @@ import { getRandomQuestion } from "@/services/questions";
 import { getUser } from "@/services/user";
 import { Tables } from "@/types/database.types";
 import { updateOrInsertForget } from "@/services/forgets";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 
 export default function RandomQuestions() {
   const navigate = useNavigate();
+  const { state } = useLocation();
   const [question, setQuestion] = useState<Tables<"questions">>();
   const [forget, setForget] = useState<Tables<"forgets">>();
   const [isSubmit, setIsSubmit] = useState(false);
@@ -23,7 +24,7 @@ export default function RandomQuestions() {
     setInput("");
     setLoading(true);
     if (userId) {
-      getRandomQuestion(userId, question?.id)
+      getRandomQuestion(userId, state?.subjects ?? [], question?.id)
         .then(({ targetQuestion, targetForget, remainCount, totalCount }) => {
           setQuestion(targetQuestion);
           setForget(targetForget);
@@ -42,7 +43,7 @@ export default function RandomQuestions() {
       setUserId(user.id);
 
       const { targetQuestion, targetForget, remainCount, totalCount } =
-        await getRandomQuestion(user.id);
+        await getRandomQuestion(user.id, state?.subjects ?? []);
       setQuestion(targetQuestion);
       setForget(targetForget);
       setRemainCount(remainCount);

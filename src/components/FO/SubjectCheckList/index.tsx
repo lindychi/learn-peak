@@ -109,7 +109,11 @@ export default function SubjectCheckList() {
           )}
         />
         <Button
-          onClick={() => navigate("/random")}
+          onClick={() =>
+            navigate("/random", {
+              state: { subjects: form.getValues().subjects },
+            })
+          }
           className="p-2 bg-emerald-500 rounded"
         >
           문제 풀기

@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import AdminAddQuestionDialog from "@/components/admin/Dialog/AddQuestion";
 
 export default function AdminQuestionsPage() {
   const tableInfo: TableInfo[] = [
@@ -47,6 +48,7 @@ export default function AdminQuestionsPage() {
         <CardHeader>
           <CardTitle>Questions</CardTitle>
           <CardDescription>문제 리스트</CardDescription>
+          <AdminAddQuestionDialog />
         </CardHeader>
         <CardContent>
           <AdminTable

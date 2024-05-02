@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { supabase } from "@/libs/supabase";
-
-import { getUser } from "@/services/user";
+import { getUser, logoutUser } from "@/services/user";
 
 import { Button } from "@/components/ui/button";
 import SubjectCheckList from "@/components/FO/SubjectCheckList";
@@ -17,11 +15,7 @@ function App() {
 
   const logout = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        throw error;
-      }
-
+      await logoutUser();
       navigate("/login");
     } catch (e) {
       console.error(e);

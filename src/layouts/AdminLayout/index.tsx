@@ -1,6 +1,8 @@
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { useEffect, useState } from "react";
 import { Book, Home, MessageCircleQuestion } from "lucide-react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+
+import { TooltipProvider } from "@/components/ui/tooltip";
 import SideTooltip from "./Tooltip";
 import {
   Breadcrumb,
@@ -19,10 +21,30 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Avatar } from "@/components/ui/avatar";
-import { AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { getUser, logoutUser } from "@/services/user";
 
 export default function AdminLayout() {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  const loadUser = async () => {
+    try {
+      const user = await getUser();
+      if (user.email !== "igam0000@gmail.com") {
+        logoutUser();
+        throw new Error("Not Admin User");
+      }
+      setIsLoading(false);
+    } catch (e) {
+      navigate("/login");
+    }
+  };
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-neutral-800 sm:flex text-neutral-400">

@@ -18,12 +18,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const FormSchema = z.object({
   subjects: z.array(z.string()), // subject는 문자열 배열로 가정합니다.
 });
 
-export default function SubjectCheckList() {
+type Props = { isLoading: boolean };
+
+export default function SubjectCheckList({ isLoading }: Props) {
   const navigate = useNavigate();
   const [subjects, setSubjects] = useState<Tables<"subjects">[]>([]);
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -105,8 +108,10 @@ export default function SubjectCheckList() {
               state: { subjects: form.getValues().subjects },
             })
           }
-          className="p-2 bg-emerald-500 rounded"
+          className="p-2 bg-emerald-500 rounded flex gap-2"
+          disabled={isLoading}
         >
+          {isLoading && <ReloadIcon className="animate-spin" />}
           문제 풀기
         </Button>
       </form>
